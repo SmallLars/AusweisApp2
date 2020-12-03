@@ -46,11 +46,7 @@ void NfcReaderManagerPlugIn::onReaderDisconnected()
 
 NfcReaderManagerPlugIn::NfcReaderManagerPlugIn()
 	: ReaderManagerPlugIn(ReaderManagerPlugInType::NFC,
-#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
 			QNearFieldManager().isSupported(QNearFieldTarget::TagTypeSpecificAccess)
-#else
-			QNearFieldManager().isSupported()
-#endif
 			)
 	, mNfcReader(nullptr)
 {

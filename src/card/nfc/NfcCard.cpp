@@ -24,10 +24,6 @@ NfcCard::NfcCard(QNearFieldTarget* pNearFieldTarget)
 	qCDebug(card_nfc) << "Card created";
 
 	QObject::connect(pNearFieldTarget, &QNearFieldTarget::error, this, &NfcCard::fireTargetError);
-
-#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
-	pNearFieldTarget->setKeepConnection(true);
-#endif
 }
 
 

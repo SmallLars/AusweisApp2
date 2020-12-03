@@ -33,7 +33,7 @@ Q_IMPORT_PLUGIN(IntentActivationHandler)
 
 
 #if defined(Q_OS_IOS)
-Q_IMPORT_PLUGIN(IosReaderManagerPlugIn)
+Q_IMPORT_PLUGIN(NfcReaderManagerPlugIn)
 
 #ifndef INTEGRATED_SDK
 Q_IMPORT_PLUGIN(CustomSchemeActivationHandler)

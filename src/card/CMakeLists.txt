@@ -19,8 +19,4 @@ if(TARGET ${Qt}::Nfc)
 	add_subdirectory(nfc)
 endif()
 
-if(IOS)
-	add_subdirectory(ios)
-endif()
-
 add_subdirectory(drivers)

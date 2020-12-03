@@ -219,7 +219,7 @@ if(ANDROID)
 endif()
 
 if(IOS)
-	target_link_libraries(AusweisApp PRIVATE AusweisAppCardIos)
+	target_link_libraries(AusweisApp PRIVATE AusweisAppCardNfc)
 	if(NOT INTEGRATED_SDK)
 		target_link_libraries(AusweisApp PRIVATE AusweisAppActivationCustomScheme)
 	endif()

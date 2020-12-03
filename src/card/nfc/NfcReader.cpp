@@ -56,10 +56,8 @@ void NfcReader::targetDetected(QNearFieldTarget* pTarget)
 	connect(mCard.data(), &NfcCard::fireSetProgressMessage, this, &NfcReader::setProgressMessage);
 	QSharedPointer<CardConnectionWorker> cardConnection = createCardConnectionWorker();
 	CardInfoFactory::create(cardConnection, mReaderInfo);
-#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
 	//: INFO IOS Feedback when a new ID card has been detected
 	mNfManager.setUserInformation(tr("ID card detected. Please do not move the device!"));
-#endif
 	Q_EMIT fireCardInserted(mReaderInfo);
 }
 
@@ -78,11 +76,7 @@ void NfcReader::targetLost(QNearFieldTarget* pTarget)
 
 void NfcReader::setProgressMessage(const QString& pMessage)
 {
-#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
 	mNfManager.setUserInformation(pMessage);
-#else
-	Q_UNUSED(pMessage)
-#endif
 }
 
 
@@ -94,18 +88,12 @@ NfcReader::NfcReader()
 	mReaderInfo.setConnected(true);
 
 	connect(&mNfManager, &QNearFieldManager::adapterStateChanged, this, &NfcReader::adapterStateChanged);
-#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
 	connect(&mNfManager, &QNearFieldManager::targetDetectionStopped, this, &NfcReader::fireReaderDisconnected);
-#endif
 	connect(&mNfManager, &QNearFieldManager::targetDetected, this, &NfcReader::targetDetected);
 	connect(&mNfManager, &QNearFieldManager::targetLost, this, &NfcReader::targetLost);
 
 #if defined(Q_OS_ANDROID)
-#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
-	mNfManager.startTargetDetection();
-#else
 	mNfManager.startTargetDetection(QNearFieldTarget::TagTypeSpecificAccess);
-#endif
 	auto activity = QtAndroid::androidActivity();
 	// Check if not used as SDK
 	if (activity.isValid())
@@ -132,13 +120,8 @@ NfcReader::~NfcReader()
 
 bool NfcReader::isEnabled() const
 {
-#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
-	return mNfManager.isAvailable();
-
-#else
 	return mNfManager.isEnabled();
 
-#endif
 }
 
 
@@ -155,7 +138,7 @@ Card* NfcReader::getCard() const
 
 void NfcReader::connectReader()
 {
-#if defined(Q_OS_IOS) && QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+#if defined(Q_OS_IOS)
 	//: INFO IOS The ID card may be inserted, the authentication process may be started.
 	mNfManager.setUserInformation(tr("Please place your ID card on the top of the device's back side."));
 	mNfManager.startTargetDetection(QNearFieldTarget::TagTypeSpecificAccess);
@@ -165,7 +148,7 @@ void NfcReader::connectReader()
 
 void NfcReader::disconnectReader(const QString& pError)
 {
-#if defined(Q_OS_IOS) && QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+#if defined(Q_OS_IOS)
 	if (pError.isNull())
 	{
 		//: INFO IOS The current session was stopped without errors.
